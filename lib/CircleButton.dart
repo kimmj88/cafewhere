@@ -1,16 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class CircleButton extends StatelessWidget {
-  const CircleButton({Key? key}) : super(key: key);
+  String icon;
+  CircleButton(this.icon, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 5),
-      padding: const EdgeInsets.all(2),
+      //padding: const EdgeInsets.all(2),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topRight,
@@ -25,11 +24,11 @@ class CircleButton extends StatelessWidget {
             const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(65),
-          child: const SizedBox(
+          child: SizedBox(
               width: 58,
               height: 65,
               child: Image(
-                image: AssetImage('assets/images/Music_Icon.jpg'),
+                image: AssetImage(icon),
                 fit: BoxFit.cover,
               )),
         ),

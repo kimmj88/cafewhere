@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 
 final List<String> imgList = [
   'assets/images/main_home.png',
+  'assets/images/main_home2.png',
 ];
 
 class Home extends StatelessWidget {
@@ -65,16 +66,15 @@ class Home extends StatelessWidget {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
-                  CircleButton('assets/images/hy.png'),
+                  CircleButton('assets/images/ag.png'),
+                  CircleButton('assets/images/be.png'),
                   CircleButton('assets/images/hm.png'),
                   CircleButton('assets/images/hs.png'),
+                  CircleButton('assets/images/je.png'),
+                  CircleButton('assets/images/ks.png'),
                   CircleButton('assets/images/ss.png'),
                   CircleButton('assets/images/yi.png'),
-                  CircleButton('assets/images/hy.png'),
-                  CircleButton('assets/images/hm.png'),
-                  CircleButton('assets/images/hs.png'),
-                  CircleButton('assets/images/ss.png'),
-                  CircleButton('assets/images/yi.png'),
+                  CircleButton('assets/images/ym.png'),
                 ],
               ),
             ),
@@ -110,7 +110,7 @@ class Home extends StatelessWidget {
                   width: 60,
                   decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
-                    color: Colors.amber,
+                    color: Color.fromARGB(255, 131, 131, 130),
                   ),
                 ),
                 SizedBox(

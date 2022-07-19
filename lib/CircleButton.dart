@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/ImageComponent.dart';
+import 'package:flutter_application_1/home.dart';
 import 'package:get/get.dart';
 
 class CircleButton extends StatelessWidget {
@@ -9,12 +10,13 @@ class CircleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ImageComponent()),
-        );
+        Get.to(() => ImageComponent());
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => ImageComponent()),
+        // );
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 5),

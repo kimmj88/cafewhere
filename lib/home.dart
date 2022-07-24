@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_1/CircleButton.dart';
+import 'package:flutter_application_1/Roundbutton.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 import 'package:get/get.dart';
@@ -12,8 +13,8 @@ import 'package:get/get.dart';
 // ];
 
 final List<String> imgList = [
-  'assets/images/main_home.png',
   'assets/images/main_home2.png',
+  'assets/images/main_home.png',
 ];
 
 class Home extends StatelessWidget {
@@ -101,60 +102,32 @@ class Home extends StatelessWidget {
             ),
             Row(
               children: [
-                SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 12.0),
-                  height: 60,
-                  width: 60,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: Color.fromARGB(255, 131, 131, 130),
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 12.0),
-                  height: 60,
-                  width: 60,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: Colors.amber,
-                  ),
-                ),
+                SizedBox(width: 12),
+                RoundButton('assets/images/garden_plant.png', '정원•식물'),
+                SizedBox(width: 12),
+                RoundButton('assets/images/study_round.png', '스터디•독서'),
+                SizedBox(width: 12),
+                RoundButton('assets/images/dessrt.png', '디저트•브런치'),
+                SizedBox(width: 12),
+                RoundButton('assets/images/music_trend.png', '음악•트렌드'),
+                SizedBox(width: 12),
+                RoundButton('assets/images/takeout.png', '스탠딩•테이크아웃'),
               ],
             ),
             Row(
               children: [
-                SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 12.0),
-                  height: 60,
-                  width: 60,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: Colors.amber,
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 12.0),
-                  height: 60,
-                  width: 60,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: Colors.amber,
-                  ),
-                ),
+                SizedBox(width: 12),
+                RoundButton('assets/images/grage.png', '로스팅•창고'),
+                SizedBox(width: 12),
+                RoundButton('assets/images/rooftop.png', '테라스•루프탑'),
+                SizedBox(width: 12),
+                RoundButton('assets/images/study_round.png', '인테리어•소품'),
+                SizedBox(width: 12),
+                RoundButton('assets/images/picture_concert.png', '그림•전시'),
+                SizedBox(width: 12),
+                RoundButton('assets/images/expresso.png', '에스프레소•핸드드립'),
               ],
-            )
+            ),
           ],
         ),
       ),

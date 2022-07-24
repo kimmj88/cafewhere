@@ -33,4 +33,15 @@ class IconsPath {
 
   static String get userOn => 'assets/images/user_on.png';
   static String get userOff => 'assets/images/user_off.png';
+
+  static String get theme_plant => 'assets/images/garden_plant.png';
+  static String get theme_study => 'assets/images/study_round.png';
+  static String get theme_dessrt => 'assets/images/dessrt.png';
+  static String get theme_music => 'assets/images/music_trend.png';
+  static String get theme_takeout => 'assets/images/takeout.png';
+  static String get theme_grage => 'assets/images/grage.png';
+  static String get theme_rooftop => 'assets/images/rooftop.png';
+  static String get theme_interior => 'assets/images/study_round.png';
+  static String get theme_picture => 'assets/images/picture_concert.png';
+  static String get theme_expresso => 'assets/images/expresso.png';
 }

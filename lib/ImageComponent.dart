@@ -30,12 +30,23 @@ class _ImageComponentState extends State<ImageComponent>
         ),
         backgroundColor: Colors.white,
         title: Container(
-            height: 40,
-            width: 300,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.black12,
-                shape: BoxShape.rectangle)),
+          child: TextField(
+            decoration: new InputDecoration(
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                suffixIcon: Icon(Icons.search), //검색 아이콘 추가
+                contentPadding:
+                    EdgeInsets.only(left: 5, bottom: 5, top: 5, right: 5),
+                hintText: '검색'),
+          ),
+          height: 40,
+          width: 300,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: Colors.black12,
+            shape: BoxShape.rectangle,
+          ),
+        ),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(100),
           child: Container(
@@ -49,15 +60,16 @@ class _ImageComponentState extends State<ImageComponent>
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: <Widget>[
-                      CircleButton('assets/images/ag.png'),
-                      CircleButton('assets/images/be.png'),
-                      CircleButton('assets/images/hm.png'),
-                      CircleButton('assets/images/hs.png'),
-                      CircleButton('assets/images/je.png'),
-                      CircleButton('assets/images/ks.png'),
-                      CircleButton('assets/images/ss.png'),
-                      CircleButton('assets/images/yi.png'),
-                      CircleButton('assets/images/ym.png'),
+                      CircleButton(IconsPath.theme_plant),
+                      CircleButton(IconsPath.theme_study),
+                      CircleButton(IconsPath.theme_dessrt),
+                      CircleButton(IconsPath.theme_music),
+                      CircleButton(IconsPath.theme_takeout),
+                      CircleButton(IconsPath.theme_grage),
+                      CircleButton(IconsPath.theme_rooftop),
+                      CircleButton(IconsPath.theme_interior),
+                      CircleButton(IconsPath.theme_picture),
+                      CircleButton(IconsPath.theme_expresso),
                     ],
                   ),
                 ),
@@ -85,15 +97,13 @@ class _ImageComponentState extends State<ImageComponent>
         child: Column(
           children: [
             Container(
-              height: 200,
-              decoration:
-                  BoxDecoration(color: Colors.amber, shape: BoxShape.rectangle),
-            ),
+                height: 200,
+                decoration: BoxDecoration(
+                    color: Colors.amber, shape: BoxShape.rectangle)),
             Container(
-              height: 200,
-              decoration:
-                  BoxDecoration(color: Colors.blue, shape: BoxShape.rectangle),
-            ),
+                height: 200,
+                decoration: BoxDecoration(
+                    color: Colors.blue, shape: BoxShape.rectangle)),
             Container(
               height: 200,
               decoration: BoxDecoration(

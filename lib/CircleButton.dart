@@ -12,7 +12,7 @@ class CircleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => ImageComponent());
+        Get.to(() => ImageComponent(CrossMenu.RactangleMenu));
         // Navigator.push(
         //   context,
         //   MaterialPageRoute(builder: (context) => ImageComponent()),

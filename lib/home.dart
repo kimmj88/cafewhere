@@ -28,62 +28,81 @@ class Home extends StatelessWidget {
         scrollDirection: Axis.vertical,
         child: Column(
           children: [
-            Container(
-              color: Color.fromARGB(255, 219, 219, 216),
-              height: 245,
-              child: Swiper(
-                control: const SwiperControl(),
-                pagination: const SwiperPagination(),
-                itemCount: imgList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Image.asset(imgList[index]);
-                },
-              ),
-            ),
-            mainText('어디로 갈까?'),
-            Container(
-              height: 70.0,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  CircleButton('assets/images/ag.png'),
-                  CircleButton('assets/images/be.png'),
-                  CircleButton('assets/images/hm.png'),
-                  CircleButton('assets/images/hs.png'),
-                  CircleButton('assets/images/je.png'),
-                  CircleButton('assets/images/ks.png'),
-                  CircleButton('assets/images/ss.png'),
-                  CircleButton('assets/images/yi.png'),
-                  CircleButton('assets/images/ym.png'),
-                ],
-              ),
-            ),
-            mainText('오늘 뭐할까?'),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                RoundButton(IconsPath.theme_plant, '정원•식물'),
-                RoundButton(IconsPath.theme_study, '스터디•독서'),
-                RoundButton(IconsPath.theme_dessrt, '디저트•브런치'),
-                RoundButton(IconsPath.theme_music, '음악•트렌드'),
-                RoundButton(IconsPath.theme_takeout, '스탠딩•테이크아웃'),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                RoundButton(IconsPath.theme_grage, '로스팅•창고'),
-                RoundButton(IconsPath.theme_rooftop, '테라스•루프탑'),
-                RoundButton(IconsPath.theme_interior, '인테리어•소품'),
-                RoundButton(IconsPath.theme_picture, '그림•전시'),
-                RoundButton(IconsPath.theme_expresso, '에스프레소•핸드드립'),
-              ],
-            ),
+            TopBody(),
+            WhereBody(),
+            WhatBody(),
           ],
         ),
       ),
     );
   }
+}
+
+Widget TopBody() {
+  return Container(
+    height: 300,
+    child: Swiper(
+      control: const SwiperControl(),
+      pagination: const SwiperPagination(),
+      itemCount: imgList.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Image.asset(imgList[index], fit: BoxFit.fill);
+      },
+    ),
+  );
+}
+
+Widget WhereBody() {
+  return Column(
+    children: [
+      mainText('어디로 갈까?'),
+      Container(
+        height: 70.0,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: <Widget>[
+            CircleButton('assets/images/ag.png'),
+            CircleButton('assets/images/be.png'),
+            CircleButton('assets/images/hm.png'),
+            CircleButton('assets/images/hs.png'),
+            CircleButton('assets/images/je.png'),
+            CircleButton('assets/images/ks.png'),
+            CircleButton('assets/images/ss.png'),
+            CircleButton('assets/images/yi.png'),
+            CircleButton('assets/images/ym.png'),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+Widget WhatBody() {
+  return Column(
+    children: [
+      mainText('오늘 뭐할까?'),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          RoundButton(IconsPath.theme_plant, '정원•식물'),
+          RoundButton(IconsPath.theme_study, '스터디•독서'),
+          RoundButton(IconsPath.theme_dessrt, '디저트•브런치'),
+          RoundButton(IconsPath.theme_music, '음악•트렌드'),
+          RoundButton(IconsPath.theme_takeout, '스탠딩•테이크아웃'),
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          RoundButton(IconsPath.theme_grage, '로스팅•창고'),
+          RoundButton(IconsPath.theme_rooftop, '테라스•루프탑'),
+          RoundButton(IconsPath.theme_interior, '인테리어•소품'),
+          RoundButton(IconsPath.theme_picture, '그림•전시'),
+          RoundButton(IconsPath.theme_expresso, '에스프레소•핸드드립'),
+        ],
+      ),
+    ],
+  );
 }
 
 Widget mainText(String text) {

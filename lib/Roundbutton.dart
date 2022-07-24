@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
+
+import 'ImageComponent.dart';
 
 class RoundButton extends StatelessWidget {
   String icon;
@@ -9,23 +12,27 @@ class RoundButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 12.0),
-          height: 60,
-          width: 60,
-          decoration: BoxDecoration(
-            image: DecorationImage(image: AssetImage(icon)),
-            shape: BoxShape.rectangle,
-            //color: Colors.amber,
+    return GestureDetector(
+      onTap: () {
+        Get.to(() => ImageComponent(CrossMenu.CircleMenu));
+      },
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 12.0),
+            height: 60,
+            width: 60,
+            decoration: BoxDecoration(
+              image: DecorationImage(image: AssetImage(icon)),
+              shape: BoxShape.rectangle,
+            ),
           ),
-        ),
-        Text(
-          title,
-          style: TextStyle(fontSize: 10),
-        )
-      ],
+          Text(
+            title,
+            style: TextStyle(fontSize: 10),
+          )
+        ],
+      ),
     );
   }
 }

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_1/CircleButton.dart';
+import 'package:flutter_application_1/MarketDescPage.dart';
 import 'package:flutter_application_1/Roundbutton.dart';
 import 'package:flutter_application_1/image_data.dart';
+import 'package:get/get.dart';
 
 enum CrossMenu {
   CircleMenu,
@@ -65,13 +67,20 @@ class _ImageComponentState extends State<ImageComponent>
       scrollDirection: Axis.vertical,
       child: Column(
         children: [
-          // Container(
-          //   height: 200,
-          //   decoration: BoxDecoration(
-          //     color: Colors.amber,
-          //     shape: BoxShape.rectangle,
-          //   ),
-          // ),
+          GestureDetector(
+            onTap: () {
+              Get.to(() => MarketDescPage());
+            },
+            child: Container(
+              height: 200,
+              decoration: BoxDecoration(
+                color: Colors.amber,
+                shape: BoxShape.rectangle,
+              ),
+              child: Image.network(
+                  'http://124.53.149.174:3000/images/kakao_test.png'),
+            ),
+          ),
         ],
       ),
     );
@@ -84,6 +93,7 @@ class _ImageComponentState extends State<ImageComponent>
       title: Container(
         child: TextField(
           decoration: new InputDecoration(
+              //fillColor: Color.fromARGB(255, 206, 190, 161),
               border: InputBorder.none,
               focusedBorder: InputBorder.none,
               suffixIcon: Icon(Icons.search), //검색 아이콘 추가
@@ -95,7 +105,7 @@ class _ImageComponentState extends State<ImageComponent>
         width: 300,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          color: Colors.black12,
+          color: Color.fromARGB(255, 206, 190, 161),
           shape: BoxShape.rectangle,
         ),
       ),
@@ -152,3 +162,54 @@ Container CrossMenuListView(CrossMenu crsm) {
   }
   return Container();
 }
+// Widget SelectDescriptionPage() {
+//   return DecoratedBox(
+//     decoration: BoxDecoration(color: Colors.grey),
+//     child: Stack(
+//       alignment: Alignment.centerRight,
+//       children: <Widget>[
+//         Container(
+//           height: 200,
+//           decoration: BoxDecoration(
+//             image: DecorationImage(
+//                 fit: BoxFit.fitWidth,
+//                 image: NetworkImage(
+//                     'http://192.168.219.101:3000/images/cafe_1.jpg')),
+//             color: Colors.amber,
+//             shape: BoxShape.rectangle,
+//           ),
+//         ),
+//         Positioned(
+//           right: 0,
+//           top: 0,
+//           child: Opacity(
+//             opacity: 0.7,
+//             child: Container(
+//               width: 180,
+//               height: 45,
+//               decoration: BoxDecoration(color: Colors.grey),
+//               child: Align(
+//                   alignment: Alignment.centerRight,
+//                   child: Text('로얄살룬\n서울특별시 동교동 113-108')),
+//             ),
+//           ),
+//         ),
+//         Positioned(
+//           right: 0,
+//           bottom: 0,
+//           child: Opacity(
+//             opacity: 0.7,
+//             child: Container(
+//               width: 230,
+//               height: 35,
+//               decoration: BoxDecoration(color: Colors.grey),
+//               child: Align(
+//                   alignment: Alignment.centerRight,
+//                   child: Text('#연남동#샐러드#브런치#신상카페')),
+//             ),
+//           ),
+//         ),
+//       ],
+//     ),
+//   );
+// }

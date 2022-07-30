@@ -24,6 +24,7 @@ class App extends GetView<BottmNavController> {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Color.fromARGB(255, 206, 190, 161),
           elevation: 0,
           showSelectedLabels: false,
           showUnselectedLabels: false,

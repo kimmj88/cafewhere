@@ -14,7 +14,7 @@ import 'package:get/get.dart';
 // ];
 
 final List<String> imgList = [
-  'assets/images/main_home.png',
+  'assets/images/INTRO-16.png',
   'assets/images/main_home2.png',
 ];
 

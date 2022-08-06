@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_1/CircleButton.dart';
@@ -6,6 +7,8 @@ import 'package:flutter_application_1/MarketDescPage.dart';
 import 'package:flutter_application_1/Roundbutton.dart';
 import 'package:flutter_application_1/image_data.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 enum CrossMenu {
   CircleMenu,
@@ -36,6 +39,8 @@ List<CircleButton> roundBtnList = [
   CircleButton('assets/images/ym.png'),
 ];
 
+List<dynamic> store_List = [];
+
 class ImageComponent extends StatefulWidget {
   CrossMenu nCrossType;
   ImageComponent(this.nCrossType, {Key? key}) : super(key: key);
@@ -48,6 +53,7 @@ class _ImageComponentState extends State<ImageComponent>
     with TickerProviderStateMixin {
   late TabController tabController;
 
+  TextEditingController Edit_Search = new TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -67,20 +73,12 @@ class _ImageComponentState extends State<ImageComponent>
       scrollDirection: Axis.vertical,
       child: Column(
         children: [
-          GestureDetector(
-            onTap: () {
-              Get.to(() => MarketDescPage());
-            },
-            child: Container(
-              height: 200,
-              decoration: BoxDecoration(
-                color: Colors.amber,
-                shape: BoxShape.rectangle,
-              ),
-              child: Image.network(
-                  'http://124.53.149.174:3000/images/kakao_test.png'),
-            ),
-          ),
+          for (int i = 0; i < store_List.length; i++)
+            SelectStoreItempage(
+                store_List[i]['store_name'],
+                store_List[i]['store_address'],
+                store_List[i]['store_description'],
+                store_List[i]['image_name'])
         ],
       ),
     );
@@ -92,6 +90,11 @@ class _ImageComponentState extends State<ImageComponent>
       backgroundColor: Colors.white,
       title: Container(
         child: TextField(
+          controller: Edit_Search,
+          textInputAction: TextInputAction.go,
+          onSubmitted: (value) {
+            GetStoreItem(Edit_Search.text);
+          },
           decoration: new InputDecoration(
               //fillColor: Color.fromARGB(255, 206, 190, 161),
               border: InputBorder.none,
@@ -135,6 +138,19 @@ class _ImageComponentState extends State<ImageComponent>
       ),
     );
   }
+
+  void GetStoreItem(String storeName) async {
+    String url =
+        "http://124.53.149.174:3000/storeinfo?store_name=" + storeName + "";
+    var response = await http.get(Uri.parse(url));
+    var statusCode = response.statusCode;
+    var responseHeaders = response.headers;
+    String responseBody = utf8.decode(response.bodyBytes);
+
+    setState(() {
+      store_List = jsonDecode(responseBody);
+    });
+  }
 }
 
 // ignore: non_constant_identifier_names
@@ -162,54 +178,79 @@ Container CrossMenuListView(CrossMenu crsm) {
   }
   return Container();
 }
-// Widget SelectDescriptionPage() {
-//   return DecoratedBox(
-//     decoration: BoxDecoration(color: Colors.grey),
-//     child: Stack(
-//       alignment: Alignment.centerRight,
-//       children: <Widget>[
-//         Container(
-//           height: 200,
-//           decoration: BoxDecoration(
-//             image: DecorationImage(
-//                 fit: BoxFit.fitWidth,
-//                 image: NetworkImage(
-//                     'http://192.168.219.101:3000/images/cafe_1.jpg')),
-//             color: Colors.amber,
-//             shape: BoxShape.rectangle,
-//           ),
-//         ),
-//         Positioned(
-//           right: 0,
-//           top: 0,
-//           child: Opacity(
-//             opacity: 0.7,
-//             child: Container(
-//               width: 180,
-//               height: 45,
-//               decoration: BoxDecoration(color: Colors.grey),
-//               child: Align(
-//                   alignment: Alignment.centerRight,
-//                   child: Text('로얄살룬\n서울특별시 동교동 113-108')),
-//             ),
-//           ),
-//         ),
-//         Positioned(
-//           right: 0,
-//           bottom: 0,
-//           child: Opacity(
-//             opacity: 0.7,
-//             child: Container(
-//               width: 230,
-//               height: 35,
-//               decoration: BoxDecoration(color: Colors.grey),
-//               child: Align(
-//                   alignment: Alignment.centerRight,
-//                   child: Text('#연남동#샐러드#브런치#신상카페')),
-//             ),
-//           ),
-//         ),
-//       ],
-//     ),
-//   );
-// }
+
+Widget SelectStoreItempage(String strStoreName, String strAddress,
+    String strDescription, String strNetPathImage) {
+  return GestureDetector(
+    onTap: () {
+      Get.to(() => MarketDescPage(
+          strStoreName, strAddress, strDescription, strNetPathImage));
+    },
+    child: DecoratedBox(
+      decoration: const BoxDecoration(color: Colors.grey),
+      child: Stack(
+        alignment: Alignment.centerRight,
+        children: <Widget>[
+          Container(
+            height: 200,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.fitWidth,
+                  image: NetworkImage(
+                      'http://124.53.149.174:3000/images/' + strNetPathImage)),
+              color: Colors.amber,
+              shape: BoxShape.rectangle,
+            ),
+          ),
+          Positioned(
+            right: 0,
+            top: 0,
+            child: Opacity(
+              opacity: 0.7,
+              child: Container(
+                width: 180,
+                height: 45,
+                decoration: const BoxDecoration(color: Colors.grey),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    strAddress, //INPUT
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontFamily: 'BATANG',
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2.0),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            right: 0,
+            bottom: 0,
+            child: Opacity(
+              opacity: 0.8,
+              child: Container(
+                height: 35,
+                decoration: const BoxDecoration(color: Colors.brown),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    strDescription, //INPUT
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontFamily: 'BATANG',
+                        //fontWeight: FontWeight.bold,
+                        letterSpacing: 2.0),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}

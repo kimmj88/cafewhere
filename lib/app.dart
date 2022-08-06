@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_1/CircleButton.dart';
+import 'package:flutter_application_1/LoginPage.dart';
 import 'package:flutter_application_1/bottom_nav_controller.dart';
 import 'package:flutter_application_1/home.dart';
 import 'package:flutter_application_1/image_data.dart';
@@ -20,7 +21,7 @@ class App extends GetView<BottmNavController> {
             Home(),
             Center(child: Container(child: Text('SEARCH'))),
             Center(child: Container(child: Text('SAVE'))),
-            Center(child: Container(child: Text('MYPAGE'))),
+            LoginPage(),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(

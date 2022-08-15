@@ -8,14 +8,8 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 
 import 'package:get/get.dart';
 
-// final List<String> imgList = [
-//   'https://christianlife.nz/wp-content/uploads/2018/03/london-1770192_640.jpg',
-//   'https://c.wallhere.com/photos/3a/ce/england_london_united_kingdom_street-1089076.jpg!d'
-// ];
-
 final List<String> imgList = [
   'assets/images/INTRO-16.png',
-  'assets/images/main_home2.png',
 ];
 
 class Home extends StatelessWidget {

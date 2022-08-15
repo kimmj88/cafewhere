@@ -254,3 +254,33 @@ Widget SelectStoreItempage(String strStoreName, String strAddress,
     ),
   );
 }
+
+Widget BoxDecorationDescription(String strCaption, double dHeight, dWidth,
+    double OpacityValue, double dLeft, dRight, dTop, dBottom) {
+  return Positioned(
+    right: dRight,
+    left: dLeft,
+    top: dTop,
+    bottom: dBottom,
+    child: Opacity(
+      opacity: OpacityValue,
+      child: Container(
+        width: dWidth,
+        height: dHeight,
+        decoration: const BoxDecoration(color: Colors.brown),
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: Text(
+            strCaption, //INPUT
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                fontFamily: 'BATANG',
+                //fontWeight: FontWeight.bold,
+                letterSpacing: 2.0),
+          ),
+        ),
+      ),
+    ),
+  );
+}

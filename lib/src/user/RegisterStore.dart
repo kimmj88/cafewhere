@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_application_1/uploadpage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -18,34 +19,36 @@ class _RegisterStoreState extends State<RegisterStore> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Container(
-        child: Column(
-          children: [
-            Text('이름'),
-            EditBox(widget.Edit_strStoreName),
-            Text('주소'),
-            EditBox(widget.Edit_strAddress),
-            Text('설명'),
-            EditBox(widget.Edit_strDescription),
-            RaisedButton(onPressed: () async {
-              String url = "http://124.53.149.174:3000/CreateStore?StoreName=" +
-                  widget.Edit_strStoreName.text +
-                  "&StoreAddress=" +
-                  widget.Edit_strAddress.text +
-                  "&StoreDesc=" +
-                  widget.Edit_strDescription.text +
-                  "";
+      body: UploadPage(),
+      // body: Container(
+      //   child: Column(
+      //     children: [
+      //       Text('이름'),
+      //       EditBox(widget.Edit_strStoreName),
+      //       Text('주소'),
+      //       EditBox(widget.Edit_strAddress),
+      //       Text('설명'),
+      //       EditBox(widget.Edit_strDescription),
+      //       RaisedButton(onPressed: () async {
+      //         String url = "http://124.53.149.174:3000/CreateStore?StoreName=" +
+      //             widget.Edit_strStoreName.text +
+      //             "&StoreAddress=" +
+      //             widget.Edit_strAddress.text +
+      //             "&StoreDesc=" +
+      //             widget.Edit_strDescription.text +
+      //             "";
 
-              var response = await http.get(Uri.parse(url));
-              if (response.statusCode == 200) {
-                print('Insert Successful');
-              } else {
-                print('Insert Failed');
-              }
-            })
-          ],
-        ),
-      ),
+      //         var response = await http.get(Uri.parse(url));
+      //         if (response.statusCode == 200) {
+      //           print('Insert Successful');
+      //         } else {
+      //           print('Insert Failed');
+      //         }
+      //       }),
+      //       UploadPage(),
+      //     ],
+      //   ),
+      // ),
     );
   }
 

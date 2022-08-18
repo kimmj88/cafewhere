@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_application_1/UserPage.dart';
+import 'package:flutter_application_1/src/user/UserPage.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -34,7 +34,7 @@ class LoginPage extends StatelessWidget {
                   StaticControl('Password'),
                   EditBox(Edit_strPassword),
                   CheckBoxControl(),
-                  LoginButtonControl(),
+                  LoginButtonControl(context),
                   SignButtonControl('계정 만들기 (Sign Up)'),
                   SignButtonControl('비밀번호 찾기 (Forget Password)'),
                 ],
@@ -117,7 +117,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget LoginButtonControl() {
+  Widget LoginButtonControl(BuildContext context) {
     return GestureDetector(
       onTap: () async {
         String url = "http://124.53.149.174:3000/IsLogin?email=" +
@@ -132,7 +132,9 @@ class LoginPage extends StatelessWidget {
 
         List<dynamic> list = jsonDecode(responseBody);
         if (list[0]['isvaild'] == '1') {
-          Get.to(() => UserPage());
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => UserPage()));
+          //Get.to(() => UserPage());
         } else {
           print('Not matched user data');
         }

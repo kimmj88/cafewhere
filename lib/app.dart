@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_1/CircleButton.dart';
-import 'package:flutter_application_1/LoginPage.dart';
 import 'package:flutter_application_1/bottom_nav_controller.dart';
-import 'package:flutter_application_1/home.dart';
 import 'package:flutter_application_1/image_data.dart';
+import 'package:flutter_application_1/src/home/home.dart';
+import 'package:flutter_application_1/src/user/LoginPage.dart';
 import 'package:get/get.dart';
 
 class App extends GetView<BottmNavController> {
@@ -21,7 +21,13 @@ class App extends GetView<BottmNavController> {
             Home(),
             Center(child: Container(child: Text('SEARCH'))),
             Center(child: Container(child: Text('SAVE'))),
-            LoginPage(),
+            Navigator(
+                //key: controller.home_navigatorKey,
+                onGenerateRoute: (routeSettings) {
+              return MaterialPageRoute(
+                builder: ((context) => LoginPage()),
+              );
+            }),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(

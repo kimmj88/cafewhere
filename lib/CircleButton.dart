@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/ImageComponent.dart';
-import 'package:flutter_application_1/home.dart';
 import 'package:get/get.dart';
 
 class CircleButton extends StatelessWidget {

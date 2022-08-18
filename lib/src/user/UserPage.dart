@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_application_1/RegisterStore.dart';
+import 'package:flutter_application_1/src/user/RegisterStore.dart';
 import 'package:get/get.dart';
 
 class UserPage extends StatefulWidget {

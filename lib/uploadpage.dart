@@ -5,13 +5,19 @@ import 'dart:io' show File;
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/src/user/LoginPage.dart';
+import 'package:flutter_application_1/src/user/SaveCafeInfo.dart';
+//import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:uuid/uuid.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class UploadPage extends StatefulWidget {
-  const UploadPage({Key? key}) : super(key: key);
+  UploadPage(this.sv, {Key? key}) : super(key: key);
 
+  SaveInfo sv;
   @override
   _UploadPageState createState() => _UploadPageState();
 }
@@ -49,6 +55,7 @@ class _UploadPageState extends State<UploadPage> {
   displayWebUploadFormScreen(_screenwidth, _screenheight) {
     return OKToast(
         child: Scaffold(
+      appBar: AppBar(),
       body: Column(
         children: [
           const SizedBox(
@@ -129,6 +136,27 @@ class _UploadPageState extends State<UploadPage> {
               ),
             ],
           ),
+          FlatButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+              color: const Color.fromRGBO(0, 35, 102, 1),
+              onPressed: uploading ? null : () => upload(),
+              child: uploading
+                  ? const SizedBox(
+                      child: CircularProgressIndicator(),
+                      height: 15.0,
+                    )
+                  : const Text(
+                      "DONE",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
         ],
       ),
     ));
@@ -172,9 +200,41 @@ class _UploadPageState extends State<UploadPage> {
       uploading = false;
     });
     showToast("Image Uploaded Successfully");
+    Navigator.pop(context);
+    Navigator.pop(context);
+    //Get.offAll(LoginPage());
   }
 
   Future<String> uplaodImageAndSaveItemInfo() async {
+    String? strStoreKey;
+    List<dynamic> store_List = [];
+    String url;
+    if (widget.sv.bImgaType == ImageType.LOGO) {
+      url = "http://124.53.149.174:3000/CreateStore?StoreName=" +
+          widget.sv.strName +
+          "&StoreAddress=" +
+          widget.sv.strAddress +
+          "&StoreDesc=" +
+          widget.sv.strDesc +
+          "&storeTag=" +
+          widget.sv.strTag +
+          "";
+
+      var response = await http.get(Uri.parse(url));
+
+      String responseBody = utf8.decode(response.bodyBytes);
+      store_List = jsonDecode(responseBody);
+      strStoreKey = store_List[0]['store_key'].toString();
+
+      if (response.statusCode == 200) {
+        print('Insert Successful');
+      } else {
+        print('Insert Failed');
+      }
+    } else if (widget.sv.bImgaType == ImageType.SLICE) {
+      strStoreKey = widget.sv.strStoreKey;
+    }
+
     setState(() {
       uploading = true;
     });
@@ -185,25 +245,28 @@ class _UploadPageState extends State<UploadPage> {
       pickedFile = PickedFile(file!.path);
       var formData =
           FormData.fromMap({'image': await MultipartFile.fromFile(file!.path)});
-      patchUserProfileImage(formData);
+      patchUserProfileImage(formData, strStoreKey, widget.sv.bImgaType);
       //await uploadImageToStorage(pickedFile, productId);
     }
     return productId;
   }
 
-  Future<dynamic> patchUserProfileImage(dynamic input) async {
-    print("프로필 사진을 서버에 업로드 합니다.");
+  Future<dynamic> patchUserProfileImage(
+      dynamic input, store_key, ImageType bImType) async {
+    var baseUri;
     var dio = new Dio();
-    var baseUri = 'http://124.53.149.174:3000/route/api/upload';
+    if (bImType == ImageType.LOGO) {
+      baseUri = 'http://124.53.149.174:3000/route/api/upload';
+    } else if (bImType == ImageType.SLICE) {
+      baseUri = 'http://124.53.149.174:3000/route/api/uploadSlice';
+    }
+
     try {
       dio.options.contentType = 'kimmin';
       dio.options.maxRedirects.isFinite;
 
-      dio.options.headers = {'token': ''};
-      var response = await dio.post(
-        baseUri,
-        data: input,
-      );
+      dio.options.headers = {'token': store_key};
+      var response = await dio.post(baseUri, data: input);
       print('성공적으로 업로드했습니다');
       return response.data;
     } catch (e) {

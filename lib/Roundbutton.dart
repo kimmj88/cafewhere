@@ -3,7 +3,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 
-import 'ImageComponent.dart';
+import 'description/ImageComponent.dart';
 
 class RoundButton extends StatelessWidget {
   String icon;
@@ -14,7 +14,9 @@ class RoundButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => ImageComponent(CrossMenu.CircleMenu));
+        Get.to(() => ImageComponent(
+              nCrossType: CrossMenu.CircleMenu,
+            ));
       },
       child: Column(
         children: [

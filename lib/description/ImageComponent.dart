@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_1/CircleButton.dart';
-import 'package:flutter_application_1/MarketDescPage.dart';
+import 'package:flutter_application_1/description/MarketDescPage.dart';
 import 'package:flutter_application_1/Roundbutton.dart';
 import 'package:flutter_application_1/image_data.dart';
 import 'package:get/get.dart';
@@ -42,8 +42,10 @@ List<CircleButton> roundBtnList = [
 List<dynamic> store_List = [];
 
 class ImageComponent extends StatefulWidget {
-  CrossMenu nCrossType;
-  ImageComponent(this.nCrossType, {Key? key}) : super(key: key);
+  CrossMenu? nCrossType;
+  int? age;
+  ImageComponent({Key? key, this.nCrossType = CrossMenu.CircleMenu})
+      : super(key: key);
 
   @override
   State<ImageComponent> createState() => _ImageComponentState();
@@ -57,6 +59,7 @@ class _ImageComponentState extends State<ImageComponent>
   @override
   void initState() {
     super.initState();
+    GetStoreItem('');
     tabController = TabController(length: 4, vsync: this);
   }
 
@@ -75,9 +78,11 @@ class _ImageComponentState extends State<ImageComponent>
         children: [
           for (int i = 0; i < store_List.length; i++)
             SelectStoreItempage(
+                store_List[i]['store_key'].toString(),
                 store_List[i]['store_name'],
                 store_List[i]['store_address'],
                 store_List[i]['store_description'],
+                store_List[i]['tag'],
                 store_List[i]['image_name'])
         ],
       ),
@@ -154,7 +159,7 @@ class _ImageComponentState extends State<ImageComponent>
 }
 
 // ignore: non_constant_identifier_names
-Container CrossMenuListView(CrossMenu crsm) {
+Container CrossMenuListView(CrossMenu? crsm) {
   if (CrossMenu.RactangleMenu == crsm) {
     return Container(
       height: 60,
@@ -179,12 +184,17 @@ Container CrossMenuListView(CrossMenu crsm) {
   return Container();
 }
 
-Widget SelectStoreItempage(String strStoreName, String strAddress,
-    String strDescription, String strNetPathImage) {
+Widget SelectStoreItempage(
+    String strStoreKey,
+    String strStoreName,
+    String strAddress,
+    String strDescription,
+    String strTag,
+    String strNetPathImage) {
   return GestureDetector(
     onTap: () {
-      Get.to(() => MarketDescPage(
-          strStoreName, strAddress, strDescription, strNetPathImage));
+      Get.to(() => MarketDescPage(strStoreKey, strStoreName, strAddress,
+          strDescription, strTag, strNetPathImage));
     },
     child: DecoratedBox(
       decoration: const BoxDecoration(color: Colors.grey),
@@ -197,7 +207,7 @@ Widget SelectStoreItempage(String strStoreName, String strAddress,
               image: DecorationImage(
                   fit: BoxFit.fitWidth,
                   image: NetworkImage(
-                      'http://124.53.149.174:3000/images/' + strNetPathImage)),
+                      'http://124.53.149.174:3000/' + strNetPathImage)),
               color: Colors.amber,
               shape: BoxShape.rectangle,
             ),

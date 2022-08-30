@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/ImageComponent.dart';
+import 'package:flutter_application_1/description/ImageComponent.dart';
 import 'package:get/get.dart';
 
 class CircleButton extends StatelessWidget {
@@ -11,7 +11,7 @@ class CircleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => ImageComponent(CrossMenu.RactangleMenu));
+        Get.to(() => ImageComponent(nCrossType: CrossMenu.RactangleMenu));
         // Navigator.push(
         //   context,
         //   MaterialPageRoute(builder: (context) => ImageComponent()),

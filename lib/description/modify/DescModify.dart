@@ -1,38 +1,54 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_application_1/src/user/RegisterStore.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class UserPage extends StatefulWidget {
-  UserPage({Key? key}) : super(key: key);
+class DescModify extends StatefulWidget {
+  DescModify({Key? key}) : super(key: key);
 
   TextEditingController Edit_strStoreName = new TextEditingController();
   TextEditingController Edit_strAddress = new TextEditingController();
-  TextEditingController Edit_strDescription = new TextEditingController();
 
   @override
-  State<UserPage> createState() => _UserPageState();
+  State<DescModify> createState() => _MyWidgetState();
 }
 
-class _UserPageState extends State<UserPage> {
+class _MyWidgetState extends State<DescModify> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.keyboard_arrow_right_outlined),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: Container(
-        child: Center(child: Text('Input Sample')),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => {
-          Get.to(RegisterStore()),
-        },
+        child: Column(
+          children: [
+            Text('영업 시간'),
+            EditBox(widget.Edit_strStoreName),
+            Text('이용 안내'),
+            EditBox(widget.Edit_strAddress),
+            RaisedButton(onPressed: () async {
+              String url = "http://124.53.149.174:3000/CreateStore?StoreName=" +
+                  widget.Edit_strStoreName.text +
+                  "&StoreAddress=" +
+                  widget.Edit_strAddress.text +
+                  "";
+
+              var response = await http.get(Uri.parse(url));
+              if (response.statusCode == 200) {
+                print('Insert Successful');
+              } else {
+                print('Insert Failed');
+              }
+            }),
+          ],
+        ),
       ),
     );
   }

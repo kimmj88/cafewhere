@@ -1,6 +1,7 @@
 enum ImageType {
   LOGO,
   SLICE,
+  MENU,
 }
 
 class SaveInfo {

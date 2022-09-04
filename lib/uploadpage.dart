@@ -231,7 +231,8 @@ class _UploadPageState extends State<UploadPage> {
       } else {
         print('Insert Failed');
       }
-    } else if (widget.sv.bImgaType == ImageType.SLICE) {
+    } else if (widget.sv.bImgaType == ImageType.SLICE ||
+        widget.sv.bImgaType == ImageType.MENU) {
       strStoreKey = widget.sv.strStoreKey;
     }
 
@@ -259,6 +260,8 @@ class _UploadPageState extends State<UploadPage> {
       baseUri = 'http://124.53.149.174:3000/route/api/upload';
     } else if (bImType == ImageType.SLICE) {
       baseUri = 'http://124.53.149.174:3000/route/api/uploadSlice';
+    } else if (bImType == ImageType.MENU) {
+      baseUri = 'http://124.53.149.174:3000/route/api/uploadMenu';
     }
 
     try {

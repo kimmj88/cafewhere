@@ -17,10 +17,14 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: AssetImage('assets/images/login_bg.jpg'))),
+          height: Get.height,
+          color: Color.fromARGB(255, 206, 190, 161),
+          // decoration: BoxDecoration(
+          //   image: DecorationImage(
+          //     fit: BoxFit.fill,
+          //     image: AssetImage('assets/images/login_bg.jpg'),
+          //   ),
+          // ),
           margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
           child: Center(
             child: Container(

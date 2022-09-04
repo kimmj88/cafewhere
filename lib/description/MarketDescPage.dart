@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/description/ImageComponent.dart';
 import 'package:flutter_application_1/description/modify/DescModify.dart';
+import 'package:flutter_application_1/description/modify/MenuModify.dart';
+import 'package:flutter_application_1/description/modify/PictureModify.dart';
 import 'package:flutter_application_1/image_data.dart';
 import 'package:flutter_application_1/src/user/SaveCafeInfo.dart';
 import 'package:flutter_application_1/uploadpage.dart';
@@ -11,6 +13,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 List<dynamic> store_List = [];
+List<dynamic> store_desc_List = [];
 
 class MarketDescPage extends StatefulWidget {
   MarketDescPage(this.strStore_key, this.strStoreName, this.strAddress,
@@ -38,6 +41,7 @@ class _MarketDescPageState extends State<MarketDescPage>
     super.initState();
     tabController = TabController(length: 4, vsync: this);
     GetStorePictures(widget.strStoreName);
+    GetStoreDescription(widget.strStore_key);
   }
 
   @override
@@ -78,25 +82,51 @@ class _MarketDescPageState extends State<MarketDescPage>
             ListTile(
               title: const Text('정보 수정'),
               onTap: () {
-                Get.to(DescModify());
+                Get.to(
+                  DescModify(
+                      SaveInfo(
+                          widget.strStore_key,
+                          widget.strStoreName,
+                          widget.strAddress,
+                          widget.strDescription,
+                          widget.strTag,
+                          ImageType.MENU),
+                      '',
+                      ''
+                      //store_desc_List[0]!['runtime_desc'],
+                      //store_desc_List[0]!['guide_desc'],
+                      ),
+                );
               },
             ),
             ListTile(
               title: const Text('메뉴'),
               onTap: () {
-                Get.to(DescModify());
+                Get.to(MenuModify(SaveInfo(
+                    widget.strStore_key,
+                    widget.strStoreName,
+                    widget.strAddress,
+                    widget.strDescription,
+                    widget.strTag,
+                    ImageType.MENU)));
               },
             ),
             ListTile(
               title: const Text('사진'),
               onTap: () {
-                Get.to(DescModify());
+                Get.to(PictureModify(SaveInfo(
+                    widget.strStore_key,
+                    widget.strStoreName,
+                    widget.strAddress,
+                    widget.strDescription,
+                    widget.strTag,
+                    ImageType.SLICE)));
               },
             ),
             ListTile(
               title: const Text('리뷰'),
               onTap: () {
-                Get.to(DescModify());
+                //Get.to(DescModify());
               },
             ),
           ],
@@ -218,50 +248,52 @@ class _MarketDescPageState extends State<MarketDescPage>
                 //정보
                 DescSlice(),
                 //메뉴
-                Container(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: NetworkImage(
-                              'http://124.53.149.174:3000/uploadFolder/132/image_picker2838291003834217718.jpg'))),
-                  width: Get.width * 0.33,
-                  height: 100,
-                ),
-                SingleChildScrollView(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Column(children: [
-                          for (var i = 0; i < store_List.length; i++)
-                            if (i % 3 == 0)
-                              PictureItem(store_List[i]['image_name']),
-                        ]),
-                      ),
-                      Expanded(
-                        child: Column(children: [
-                          for (var i = 0; i < store_List.length; i++)
-                            if (i % 3 == 1)
-                              PictureItem(store_List[i]['image_name']),
-                        ]),
-                      ),
-                      Expanded(
-                        child: Column(children: [
-                          for (var i = 0; i < store_List.length; i++)
-                            if (i % 3 == 2)
-                              PictureItem(store_List[i]['image_name']),
-                        ]),
-                      ),
-                    ],
-                  ),
-                ),
+                MenuSlice(),
+                //사진
+                PictureSlice(),
                 Container(
                   color: Colors.yellow[200],
                   alignment: Alignment.center,
-                  child: Text(
-                    'Tab1 View',
-                    style: TextStyle(
-                      fontSize: 30,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              color: Colors.red,
+                              width: 100,
+                              height: 100,
+                              child: Text('4.5'),
+                            ),
+                            Container(
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [Text('5점'), Text('200')],
+                                  ),
+                                  Row(
+                                    children: [Text('5점'), Text('200')],
+                                  ),
+                                  Row(
+                                    children: [Text('5점'), Text('200')],
+                                  ),
+                                  Row(
+                                    children: [Text('5점'), Text('200')],
+                                  ),
+                                  Row(
+                                    children: [Text('5점'), Text('200')],
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                        Container(
+                          width: Get.width,
+                          height: 1,
+                          color: Colors.grey,
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -300,21 +332,16 @@ class _MarketDescPageState extends State<MarketDescPage>
                           ),
                         ),
                       ),
-                      Text(
-                        'Mon (월). 10:00 ~ 23:00\n'
-                        'Tue (화). 10:00 ~ 23:00\n'
-                        'Wed (수). 10:00 ~ 23:00\n'
-                        'Thu (목). 10:00 ~ 23:00\n'
-                        'Fri (금). 10:00 ~ 23:00\n'
-                        'Sat (토). 10:00 ~ 23:00\n'
-                        'Sun (일). 휴무',
-                        style: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 11,
-                            fontFamily: 'Batang',
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 2.0),
-                      ),
+                      if (store_desc_List.length != 0)
+                        Text(
+                          store_desc_List[0]['runtime_desc'],
+                          style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 11,
+                              fontFamily: 'Batang',
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 2.0),
+                        ),
                     ],
                   ),
                   width: Get.width * 0.5,
@@ -330,7 +357,7 @@ class _MarketDescPageState extends State<MarketDescPage>
                           margin: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 10),
                           child: Text(
-                            '영업 시간',
+                            '이용 안내',
                             style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 18,
@@ -340,15 +367,14 @@ class _MarketDescPageState extends State<MarketDescPage>
                           ),
                         ),
                       ),
-                      Text(
-                          '- 1인 1음료 주문필수입니다.\n'
-                          '- 대기 손님이 있는 경우 이용시간 2시간으로 제한될 수 있습니다.',
-                          style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 11,
-                              fontFamily: 'Batang',
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 2.0)),
+                      if (store_desc_List.length != 0)
+                        Text(store_desc_List[0]?['guide_desc'],
+                            style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 11,
+                                fontFamily: 'Batang',
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 2.0)),
                     ],
                   ),
                   width: Get.width * 0.5,
@@ -386,6 +412,46 @@ class _MarketDescPageState extends State<MarketDescPage>
     );
   }
 
+  Widget MenuSlice() {
+    return Container(
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              fit: BoxFit.fill,
+              image: NetworkImage(
+                  'http://124.53.149.174:3000/uploadFolder/132/image_picker2838291003834217718.jpg'))),
+      width: Get.width * 0.33,
+      height: 100,
+    );
+  }
+
+  Widget PictureSlice() {
+    return SingleChildScrollView(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Column(children: [
+              for (var i = 0; i < store_List.length; i++)
+                if (i % 3 == 0) PictureItem(store_List[i]['image_name']),
+            ]),
+          ),
+          Expanded(
+            child: Column(children: [
+              for (var i = 0; i < store_List.length; i++)
+                if (i % 3 == 1) PictureItem(store_List[i]['image_name']),
+            ]),
+          ),
+          Expanded(
+            child: Column(children: [
+              for (var i = 0; i < store_List.length; i++)
+                if (i % 3 == 2) PictureItem(store_List[i]['image_name']),
+            ]),
+          ),
+        ],
+      ),
+    );
+  }
+
   void GetStorePictures(String storeName) async {
     String url = "http://124.53.149.174:3000/getstorepictures?store_name=" +
         storeName +
@@ -395,10 +461,22 @@ class _MarketDescPageState extends State<MarketDescPage>
     var responseHeaders = response.headers;
     String responseBody = utf8.decode(response.bodyBytes);
 
-    store_List = jsonDecode(responseBody);
-
     setState(() {
       store_List = jsonDecode(responseBody);
+    });
+  }
+
+  void GetStoreDescription(String store_key) async {
+    String url = "http://124.53.149.174:3000/Get_store_description?store_key=" +
+        store_key +
+        "";
+    var response = await http.get(Uri.parse(url));
+    var statusCode = response.statusCode;
+    var responseHeaders = response.headers;
+    String responseBody = utf8.decode(response.bodyBytes);
+
+    setState(() {
+      store_desc_List = jsonDecode(responseBody);
     });
   }
 
@@ -412,7 +490,7 @@ class _MarketDescPageState extends State<MarketDescPage>
   }
 }
 
-Container PictureItem(String strImagePath) {
+Widget PictureItem(String strImagePath) {
   return Container(
     decoration: BoxDecoration(
         image: DecorationImage(

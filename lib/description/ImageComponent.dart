@@ -208,7 +208,7 @@ Widget SelectStoreItempage(
                   fit: BoxFit.fitWidth,
                   image: NetworkImage(
                       'http://124.53.149.174:3000/' + strNetPathImage)),
-              color: Colors.amber,
+              color: Colors.white,
               shape: BoxShape.rectangle,
             ),
           ),

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/description/ImageComponent.dart';
+import 'package:flutter_application_1/description/PictureSlide.dart';
 import 'package:flutter_application_1/description/modify/DescModify.dart';
 import 'package:flutter_application_1/description/modify/MenuModify.dart';
 import 'package:flutter_application_1/description/modify/PictureModify.dart';
@@ -12,7 +13,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-List<dynamic> store_List = [];
+List<dynamic> store_picture_List = [];
 List<dynamic> store_desc_List = [];
 
 class MarketDescPage extends StatefulWidget {
@@ -48,18 +49,18 @@ class _MarketDescPageState extends State<MarketDescPage>
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => {
-          Get.to(UploadPage(SaveInfo(
-              widget.strStore_key,
-              widget.strStoreName,
-              widget.strAddress,
-              widget.strDescription,
-              widget.strTag,
-              ImageType.SLICE))),
-        },
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.add),
+      //   onPressed: () => {
+      //     Get.to(UploadPage(SaveInfo(
+      //         widget.strStore_key,
+      //         widget.strStoreName,
+      //         widget.strAddress,
+      //         widget.strDescription,
+      //         widget.strTag,
+      //         ImageType.SLICE))),
+      //   },
+      // ),
       endDrawer: Drawer(
         width: 200,
         child: ListView(
@@ -84,18 +85,16 @@ class _MarketDescPageState extends State<MarketDescPage>
               onTap: () {
                 Get.to(
                   DescModify(
-                      SaveInfo(
-                          widget.strStore_key,
-                          widget.strStoreName,
-                          widget.strAddress,
-                          widget.strDescription,
-                          widget.strTag,
-                          ImageType.MENU),
-                      '',
-                      ''
-                      //store_desc_List[0]!['runtime_desc'],
-                      //store_desc_List[0]!['guide_desc'],
-                      ),
+                    SaveInfo(
+                        widget.strStore_key,
+                        widget.strStoreName,
+                        widget.strAddress,
+                        widget.strDescription,
+                        widget.strTag,
+                        ImageType.MENU),
+                    store_desc_List[0]!['runtime_desc'],
+                    store_desc_List[0]!['guide_desc'],
+                  ),
                 );
               },
             ),
@@ -431,20 +430,20 @@ class _MarketDescPageState extends State<MarketDescPage>
         children: [
           Expanded(
             child: Column(children: [
-              for (var i = 0; i < store_List.length; i++)
-                if (i % 3 == 0) PictureItem(store_List[i]['image_name']),
+              for (var i = 0; i < store_picture_List.length; i++)
+                if (i % 3 == 0) PictureItem(i, store_picture_List[i]),
             ]),
           ),
           Expanded(
             child: Column(children: [
-              for (var i = 0; i < store_List.length; i++)
-                if (i % 3 == 1) PictureItem(store_List[i]['image_name']),
+              for (var i = 0; i < store_picture_List.length; i++)
+                if (i % 3 == 1) PictureItem(i, store_picture_List[i]),
             ]),
           ),
           Expanded(
             child: Column(children: [
-              for (var i = 0; i < store_List.length; i++)
-                if (i % 3 == 2) PictureItem(store_List[i]['image_name']),
+              for (var i = 0; i < store_picture_List.length; i++)
+                if (i % 3 == 2) PictureItem(i, store_picture_List[i]),
             ]),
           ),
         ],
@@ -462,7 +461,7 @@ class _MarketDescPageState extends State<MarketDescPage>
     String responseBody = utf8.decode(response.bodyBytes);
 
     setState(() {
-      store_List = jsonDecode(responseBody);
+      store_picture_List = jsonDecode(responseBody);
     });
   }
 
@@ -488,15 +487,22 @@ class _MarketDescPageState extends State<MarketDescPage>
     var responseHeaders = response.headers;
     String responseBody = utf8.decode(response.bodyBytes);
   }
-}
 
-Widget PictureItem(String strImagePath) {
-  return Container(
-    decoration: BoxDecoration(
-        image: DecorationImage(
-            fit: BoxFit.fill,
-            image: NetworkImage('http://124.53.149.174:3000/' + strImagePath))),
-    width: Get.width * 0.33,
-    height: 100,
-  );
+  Widget PictureItem(int nIndex, dynamic pItem) {
+    return GestureDetector(
+      onTap: () async {
+        store_picture_List =
+            await Get.to(PictureSlide(nIndex, pItem, store_picture_List));
+      },
+      child: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.fill,
+                image: NetworkImage(
+                    'http://124.53.149.174:3000/' + pItem['image_name']))),
+        width: Get.width * 0.33,
+        height: 100,
+      ),
+    );
+  }
 }

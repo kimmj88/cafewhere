@@ -7,7 +7,7 @@ import 'package:flutter_application_1/description/modify/DescModify.dart';
 import 'package:flutter_application_1/description/modify/MenuModify.dart';
 import 'package:flutter_application_1/description/modify/PictureModify.dart';
 import 'package:flutter_application_1/image_data.dart';
-import 'package:flutter_application_1/src/user/SaveCafeInfo.dart';
+import 'package:flutter_application_1/info/SaveCafeInfo.dart';
 import 'package:flutter_application_1/uploadpage.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;

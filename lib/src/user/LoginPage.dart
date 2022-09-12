@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_application_1/ToggleButton.dart';
+import 'package:flutter_application_1/bottom_nav_controller.dart';
+import 'package:flutter_application_1/src/user/FindOutPassword.dart';
+import 'package:flutter_application_1/src/user/RegisterUser.dart';
+import 'package:flutter_application_1/src/user/RegisterUserComplete.dart';
+import 'package:flutter_application_1/info/UserInfo.dart';
 import 'package:flutter_application_1/src/user/UserPage.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -9,14 +15,16 @@ import 'dart:convert';
 class EmptyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      color: Colors.amber,
+    );
   }
 
   @override
   Size get preferredSize => Size(0.0, 0.0);
 }
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends GetView<BottmNavController> {
   LoginPage({Key? key}) : super(key: key);
 
   TextEditingController Edit_strEmail = new TextEditingController();
@@ -25,7 +33,14 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: EmptyAppBar(),
+      // Navigator(
+      //     //key: navigatorKey,
+      //     onGenerateRoute: (routeSettings) {
+      //       return MaterialPageRoute(
+      //         builder: ((context) => LoginPage()),
+      //       );
+      //     }),
+
       body: SingleChildScrollView(
         child: Container(
           height: Get.height,
@@ -47,11 +62,11 @@ class LoginPage extends StatelessWidget {
                   StaticControl('E-mail'),
                   EditBox(Edit_strEmail),
                   StaticControl('Password'),
-                  EditBox(Edit_strPassword),
+                  PasswordEditBox(Edit_strPassword),
                   CheckBoxControl(),
                   LoginButtonControl(context),
                   SignButtonControl('계정 만들기 (Sign Up)'),
-                  SignButtonControl('비밀번호 찾기 (Forget Password)'),
+                  FindPWButtonControl('비밀번호 찾기 (Forget Password)'),
                 ],
               ),
             ),
@@ -111,22 +126,54 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget SignButtonControl(String strCaption) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-      width: 300,
-      height: 35,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.white, width: 3),
+    return GestureDetector(
+      onTap: () {
+        Get.to(RegisterUser());
+      },
+      child: Container(
+        margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+        width: 300,
+        height: 35,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.white, width: 3),
+        ),
+        child: Center(
+          child: Text(
+            strCaption,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 13,
+                fontFamily: 'RIGHTEOUS',
+                fontWeight: FontWeight.bold,
+                letterSpacing: 2.0),
+          ),
+        ),
       ),
-      child: Center(
-        child: Text(
-          strCaption,
-          style: TextStyle(
-              color: Colors.white,
-              fontSize: 13,
-              fontFamily: 'RIGHTEOUS',
-              fontWeight: FontWeight.bold,
-              letterSpacing: 2.0),
+    );
+  }
+
+  Widget FindPWButtonControl(String strCaption) {
+    return GestureDetector(
+      onTap: () {
+        Get.to(FindOutPassword());
+      },
+      child: Container(
+        margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+        width: 300,
+        height: 35,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.white, width: 3),
+        ),
+        child: Center(
+          child: Text(
+            strCaption,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 13,
+                fontFamily: 'RIGHTEOUS',
+                fontWeight: FontWeight.bold,
+                letterSpacing: 2.0),
+          ),
         ),
       ),
     );
@@ -146,10 +193,24 @@ class LoginPage extends StatelessWidget {
         String responseBody = utf8.decode(response.bodyBytes);
 
         List<dynamic> list = jsonDecode(responseBody);
-        if (list[0]['isvaild'] == '1') {
+
+        if (list.length == 0) {
+          print('not found user info');
+          return;
+        }
+
+        var con_int = list[0]['users_key'];
+        if (con_int > 0) {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => UserPage()));
-          //Get.to(() => UserPage());
+              context,
+              MaterialPageRoute(
+                  builder: (context) => UserPage(UserInfo(
+                      list[0]['users_key'],
+                      list[0]['username'],
+                      list[0]['email'],
+                      list[0]['birthday'],
+                      list[0]['password'],
+                      true))));
         } else {
           print('Not matched user data');
         }
@@ -175,6 +236,30 @@ class LoginPage extends StatelessWidget {
         border: Border.all(color: Colors.white, width: 3),
       ),
       child: TextField(
+        controller: EditText,
+        decoration: new InputDecoration(
+          border: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          contentPadding:
+              EdgeInsets.only(left: 10, bottom: 5, top: 5, right: 5),
+        ),
+        onChanged: (text) {
+          //print(Edit_strPassword.text);
+        },
+      ),
+    );
+  }
+
+  Widget PasswordEditBox(TextEditingController EditText) {
+    return Container(
+      width: 300,
+      height: 50,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20), //모서리를 둥글게
+        border: Border.all(color: Colors.white, width: 3),
+      ),
+      child: TextField(
+        obscureText: true,
         controller: EditText,
         decoration: new InputDecoration(
           border: InputBorder.none,

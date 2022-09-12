@@ -6,10 +6,13 @@ import 'package:flutter_application_1/bottom_nav_controller.dart';
 import 'package:flutter_application_1/image_data.dart';
 import 'package:flutter_application_1/src/home/home.dart';
 import 'package:flutter_application_1/src/user/LoginPage.dart';
+import 'package:flutter_application_1/src/user/UserPage.dart';
 import 'package:get/get.dart';
 
 class App extends GetView<BottmNavController> {
-  const App({Key? key}) : super(key: key);
+  App({Key? key}) : super(key: key);
+
+  GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +25,12 @@ class App extends GetView<BottmNavController> {
             Center(child: Container(child: Text('SEARCH'))),
             Center(child: Container(child: Text('SAVE'))),
             Navigator(
-                //key: controller.home_navigatorKey,
+                key: navigatorKey,
                 onGenerateRoute: (routeSettings) {
-              return MaterialPageRoute(
-                builder: ((context) => LoginPage()),
-              );
-            }),
+                  return MaterialPageRoute(
+                    builder: ((context) => LoginPage()),
+                  );
+                }),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(

@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/src/user/LoginPage.dart';
-import 'package:flutter_application_1/src/user/SaveCafeInfo.dart';
+import 'package:flutter_application_1/info/SaveCafeInfo.dart';
 //import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:oktoast/oktoast.dart';

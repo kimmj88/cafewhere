@@ -39,7 +39,6 @@ class _PictureSlideState extends State<PictureSlide> {
             ListTile(
               title: const Text('삭제'),
               onTap: () async {
-                Get.back(result: widget.image_list);
                 String url =
                     "http://124.53.149.174:3000/DeleteImage?Image_key=" +
                         widget.image_list[widget.nIndex]['image_key']
@@ -49,8 +48,11 @@ class _PictureSlideState extends State<PictureSlide> {
                 var statusCode = response.statusCode;
                 var responseHeaders = response.headers;
                 String responseBody = utf8.decode(response.bodyBytes);
+
+                widget.image_list.removeAt(widget.nIndex);
+                Get.back(result: widget.image_list);
                 setState(() {
-                  widget.image_list.removeAt(widget.nIndex);
+                  widget.image_list;
                 });
               },
             ),
@@ -64,7 +66,7 @@ class _PictureSlideState extends State<PictureSlide> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Get.back();
+              Get.back(result: widget.image_list);
             }),
       ),
       body: Container(
@@ -76,7 +78,7 @@ class _PictureSlideState extends State<PictureSlide> {
           index: widget.nIndex,
           control: const SwiperControl(),
           pagination: const SwiperPagination(),
-          itemCount: store_picture_List.length,
+          itemCount: widget.image_list.length,
           itemBuilder: (BuildContext context, int index) {
             return Image.network("http://124.53.149.174:3000/" +
                 widget.image_list[widget.nIndex]['image_name']);

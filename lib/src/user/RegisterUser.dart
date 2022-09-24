@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -16,12 +18,20 @@ class RegisterUser extends StatefulWidget {
   TextEditingController Edit_Email = new TextEditingController();
   TextEditingController Edit_password = new TextEditingController();
   TextEditingController Edit_ckpassword = new TextEditingController();
+  TextEditingController Edit_phonenumber = new TextEditingController();
 
   @override
   State<RegisterUser> createState() => _RegisterUserState();
 }
 
 class _RegisterUserState extends State<RegisterUser> {
+  bool authOK = false;
+
+  bool passwordHide = true;
+  bool requestedAuth = false;
+  String? verificationId;
+  bool showLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,12 +96,73 @@ class _RegisterUserState extends State<RegisterUser> {
           Container(
             width: Get.width * 0.90,
             child: TextField(
-              controller: widget.Edit_Email,
+              controller: widget.Edit_phonenumber,
               maxLines: 1,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: '이메일을 입력해주세요',
               ),
+            ),
+          ),
+          SizedBox(height: 15),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Row(children: [
+              Text('휴대폰  ',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text('필수', style: TextStyle(fontSize: 10, color: Colors.red)),
+            ]),
+          ),
+          SizedBox(height: 15),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(
+              children: [
+                Container(
+                  width: Get.width * 0.57,
+                  child: TextField(
+                    controller: widget.Edit_phonenumber,
+                    maxLines: 1,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: '이메일을 입력해주세요',
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: GestureDetector(
+                    onTap: () async {
+                      FirebaseAuth _auth = FirebaseAuth.instance;
+                      await _auth.verifyPhoneNumber(
+                        timeout: const Duration(seconds: 60),
+                        phoneNumber: "+650-555-3434",
+                        verificationCompleted: (PhoneAuthCredential) async {
+                          print("문자옴");
+                        },
+                        verificationFailed: (verificationFailed) async {
+                          print(verificationFailed.code);
+                          print("실패");
+                        },
+                        codeSent: (verificationId, resendingToken) async {
+                          print('코드보냄');
+                        },
+                        codeAutoRetrievalTimeout: (String verificationID) {},
+                      );
+                    },
+                    child: Container(
+                      child: Center(child: Text('인증요청')),
+                      width: Get.width * 0.25,
+                      height: 45,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color.fromARGB(136, 158, 158, 158),
+                        shape: BoxShape.rectangle,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           SizedBox(height: 50),
@@ -251,4 +322,35 @@ class _RegisterUserState extends State<RegisterUser> {
       )),
     );
   }
+
+  // void signInWithPhoneAuthCredential(
+  //     PhoneAuthCredential phoneAuthCredential) async {
+  //   setState(() {
+  //     showLoading = true;
+  //   });
+  //   try {
+  //     final authCredential =
+  //         await _auth.signInWithCredential(phoneAuthCredential);
+  //     setState(() {
+  //       showLoading = false;
+  //     });
+  //     // if (authCredential?.user != null) {
+  //     //   setState(() {
+  //     //     print("인증완료 및 로그인 성공");
+  //     //     authOK = true;
+  //     //     requestedAuth = false;
+  //     //   });
+  //     //   await _auth.currentUser?.delete();
+  //     //   print('auth정보삭제');
+  //     //   _auth.signOut();
+  //     //   print('phone로그인된것 로그아웃');
+  //     // }
+  //   } on FirebaseAuthException catch (e) {
+  //     setState(() {
+  //       print("인증실패..로그인실패");
+  //       showLoading = false;
+  //     });
+  //     //await Fluttertoast
+  //   }
+  // }
 }

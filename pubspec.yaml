@@ -43,6 +43,10 @@ dependencies:
   cached_network_image: ^3.2.1
   flutter_swiper: ^1.1.6
   http: ^0.13.0
+  google_sign_in: ^5.4.1
+  firebase_auth: ^3.9.0
+  firebase_core: ^1.22.0
+  flutter_email_sender: ^5.1.0
   
 
 dev_dependencies:

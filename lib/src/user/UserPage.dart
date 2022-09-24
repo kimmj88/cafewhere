@@ -88,8 +88,13 @@ class _UserPageState extends State<UserPage> {
             ListTile(
               title: const Text('로그아웃'),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LoginPage()));
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => LoginPage()));
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => LoginPage()),
+                    (route) => false);
               },
             ),
           ],

@@ -8,13 +8,20 @@ import 'package:flutter_application_1/description/modify/MenuModify.dart';
 import 'package:flutter_application_1/description/modify/PictureModify.dart';
 import 'package:flutter_application_1/image_data.dart';
 import 'package:flutter_application_1/info/SaveCafeInfo.dart';
-import 'package:flutter_application_1/uploadpage.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' as GET;
+
+import 'dart:io';
+import 'dart:io' show File;
+import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 List<dynamic> store_picture_List = [];
 List<dynamic> store_desc_List = [];
+
+List<dynamic> store_menu_picture_List = [];
 
 class MarketDescPage extends StatefulWidget {
   MarketDescPage(this.strStore_key, this.strStoreName, this.strAddress,
@@ -36,12 +43,18 @@ class MarketDescPage extends StatefulWidget {
 class _MarketDescPageState extends State<MarketDescPage>
     with TickerProviderStateMixin {
   late TabController tabController;
+  final ImagePicker _picker = ImagePicker();
+  List<XFile>? photo = <XFile>[];
+  List<XFile> itemImagesList = <XFile>[];
+  File? file;
+  ImageType? bSliceImageType;
 
   @override
   void initState() {
     super.initState();
     tabController = TabController(length: 4, vsync: this);
     GetStorePictures(widget.strStoreName);
+    GetStoreMenuPictures(widget.strStoreName);
     GetStoreDescription(widget.strStore_key);
   }
 
@@ -73,17 +86,17 @@ class _MarketDescPageState extends State<MarketDescPage>
               child: Text('페이지 수정'),
             ),
             ListTile(
-              title: const Text('삭제'),
+              title: const Text('카페 삭제'),
               onTap: () {
                 DeleteStore(widget.strStore_key);
-                Get.back();
-                Get.offAll(ImageComponent());
+                GET.Get.back();
+                GET.Get.offAll(ImageComponent());
               },
             ),
             ListTile(
               title: const Text('정보 수정'),
               onTap: () {
-                Get.to(
+                GET.Get.to(
                   DescModify(
                     SaveInfo(
                         widget.strStore_key,
@@ -99,27 +112,31 @@ class _MarketDescPageState extends State<MarketDescPage>
               },
             ),
             ListTile(
-              title: const Text('메뉴'),
+              title: const Text('메뉴 추가'),
               onTap: () {
-                Get.to(MenuModify(SaveInfo(
-                    widget.strStore_key,
-                    widget.strStoreName,
-                    widget.strAddress,
-                    widget.strDescription,
-                    widget.strTag,
-                    ImageType.MENU)));
+                // GET.Get.to(MenuModify(SaveInfo(
+                //     widget.strStore_key,
+                //     widget.strStoreName,
+                //     widget.strAddress,
+                //     widget.strDescription,
+                //     widget.strTag,
+                //     ImageType.MENU)));
+                pickPhotoFromGallery();
+                bSliceImageType = ImageType.MENU;
               },
             ),
             ListTile(
-              title: const Text('사진'),
+              title: const Text('사진 추가'),
               onTap: () {
-                Get.to(PictureModify(SaveInfo(
-                    widget.strStore_key,
-                    widget.strStoreName,
-                    widget.strAddress,
-                    widget.strDescription,
-                    widget.strTag,
-                    ImageType.SLICE)));
+                // Get.to(PictureModify(SaveInfo(
+                //     widget.strStore_key,
+                //     widget.strStoreName,
+                //     widget.strAddress,
+                //     widget.strDescription,
+                //     widget.strTag,
+                //     ImageType.SLICE)));
+                pickPhotoFromGallery();
+                bSliceImageType = ImageType.SLICE;
               },
             ),
             ListTile(
@@ -138,7 +155,7 @@ class _MarketDescPageState extends State<MarketDescPage>
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Get.back();
+              GET.Get.back();
             }),
       ),
       body: Column(
@@ -288,7 +305,7 @@ class _MarketDescPageState extends State<MarketDescPage>
                           ],
                         ),
                         Container(
-                          width: Get.width,
+                          width: GET.Get.width,
                           height: 1,
                           color: Colors.grey,
                         ),
@@ -343,7 +360,7 @@ class _MarketDescPageState extends State<MarketDescPage>
                         ),
                     ],
                   ),
-                  width: Get.width * 0.5,
+                  width: GET.Get.width * 0.5,
                   height: 230,
                   color: Colors.white,
                 ),
@@ -376,7 +393,7 @@ class _MarketDescPageState extends State<MarketDescPage>
                                 letterSpacing: 2.0)),
                     ],
                   ),
-                  width: Get.width * 0.5,
+                  width: GET.Get.width * 0.5,
                   height: 230,
                   color: Colors.white,
                 ),
@@ -402,7 +419,8 @@ class _MarketDescPageState extends State<MarketDescPage>
                     ),
                   ),
                 ),
-                Container(width: Get.width, height: 400, color: Colors.white),
+                Container(
+                    width: GET.Get.width, height: 400, color: Colors.white),
               ],
             ),
           ],
@@ -412,14 +430,21 @@ class _MarketDescPageState extends State<MarketDescPage>
   }
 
   Widget MenuSlice() {
-    return Container(
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              fit: BoxFit.fill,
-              image: NetworkImage(
-                  'http://124.53.149.174:3000/uploadFolder/132/image_picker2838291003834217718.jpg'))),
-      width: Get.width * 0.33,
-      height: 100,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          for (var i = 0; i < store_menu_picture_List.length; i++)
+            Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: NetworkImage('http://124.53.149.174:3000/' +
+                          store_menu_picture_List[i]['image_name']))),
+              width: GET.Get.width * 0.90,
+              height: 350,
+            ),
+        ],
+      ),
     );
   }
 
@@ -454,7 +479,8 @@ class _MarketDescPageState extends State<MarketDescPage>
   void GetStorePictures(String storeName) async {
     String url = "http://124.53.149.174:3000/getstorepictures?store_name=" +
         storeName +
-        "";
+        "&image_type=SLICE"
+            "";
     var response = await http.get(Uri.parse(url));
     var statusCode = response.statusCode;
     var responseHeaders = response.headers;
@@ -462,6 +488,21 @@ class _MarketDescPageState extends State<MarketDescPage>
 
     setState(() {
       store_picture_List = jsonDecode(responseBody);
+    });
+  }
+
+  void GetStoreMenuPictures(String storeName) async {
+    String url = "http://124.53.149.174:3000/getstorepictures?store_name=" +
+        storeName +
+        "&image_type=MENU"
+            "";
+    var response = await http.get(Uri.parse(url));
+    var statusCode = response.statusCode;
+    var responseHeaders = response.headers;
+    String responseBody = utf8.decode(response.bodyBytes);
+
+    setState(() {
+      store_menu_picture_List = jsonDecode(responseBody);
     });
   }
 
@@ -492,7 +533,7 @@ class _MarketDescPageState extends State<MarketDescPage>
     return GestureDetector(
       onTap: () async {
         store_picture_List =
-            await Get.to(PictureSlide(nIndex, pItem, store_picture_List));
+            await GET.Get.to(PictureSlide(nIndex, pItem, store_picture_List));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -500,9 +541,90 @@ class _MarketDescPageState extends State<MarketDescPage>
                 fit: BoxFit.fill,
                 image: NetworkImage(
                     'http://124.53.149.174:3000/' + pItem['image_name']))),
-        width: Get.width * 0.33,
+        width: GET.Get.width * 0.33,
         height: 100,
       ),
     );
+  }
+
+  pickPhotoFromGallery() async {
+    photo = await _picker.pickMultiImage();
+    if (photo != null) {
+      //itemImagesList = itemImagesList + photo!;
+      itemImagesList = photo!;
+      //photo!.clear();
+
+      uplaodImageAndSaveItemInfo();
+    }
+  }
+
+  Future<String> uplaodImageAndSaveItemInfo() async {
+    String? strStoreKey;
+    List<dynamic> store_List = [];
+    String url;
+
+    if (bSliceImageType == ImageType.LOGO) {
+      url = "http://124.53.149.174:3000/CreateStore?StoreName=" +
+          widget.strStoreName +
+          "&StoreAddress=" +
+          widget.strAddress +
+          "&StoreDesc=" +
+          widget.strDescription +
+          "&storeTag=" +
+          widget.strTag +
+          "";
+
+      var response = await http.get(Uri.parse(url));
+
+      String responseBody = utf8.decode(response.bodyBytes);
+      store_List = jsonDecode(responseBody);
+      strStoreKey = store_List[0]['store_key'].toString();
+
+      if (response.statusCode == 200) {
+        print('Insert Successful');
+      } else {
+        print('Insert Failed');
+      }
+    } else if (bSliceImageType == ImageType.SLICE ||
+        bSliceImageType == ImageType.MENU) {
+      strStoreKey = widget.strStore_key;
+    }
+
+    PickedFile? pickedFile;
+    String? productId = const Uuid().v4();
+    for (int i = 0; i < itemImagesList.length; i++) {
+      file = File(itemImagesList[i].path);
+      pickedFile = PickedFile(file!.path);
+      var formData =
+          FormData.fromMap({'image': await MultipartFile.fromFile(file!.path)});
+      patchUserProfileImage(formData, strStoreKey);
+      //await uploadImageToStorage(pickedFile, productId);
+    }
+    return productId;
+  }
+
+  Future<dynamic> patchUserProfileImage(dynamic input, store_key) async {
+    var baseUri;
+    var dio = new Dio();
+    if (bSliceImageType == ImageType.LOGO) {
+      baseUri = 'http://124.53.149.174:3000/route/api/upload';
+    } else if (bSliceImageType == ImageType.SLICE) {
+      baseUri = 'http://124.53.149.174:3000/route/api/uploadSlice';
+    } else if (bSliceImageType == ImageType.MENU) {
+      baseUri = 'http://124.53.149.174:3000/route/api/uploadMenu';
+    }
+
+    try {
+      dio.options.contentType = 'kimmin';
+      dio.options.maxRedirects.isFinite;
+
+      dio.options.headers = {'token': store_key};
+      var response = await dio.post(baseUri, data: input);
+      print('성공적으로 업로드했습니다');
+      itemImagesList.clear();
+      return response.data;
+    } catch (e) {
+      print(e);
+    }
   }
 }

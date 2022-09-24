@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/src/user/LoginPage.dart';
 import 'package:flutter_application_1/info/SaveCafeInfo.dart';
-//import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:uuid/uuid.dart';
@@ -73,7 +72,7 @@ class _UploadPageState extends State<UploadPage> {
                   )
                 ]),
             width: _screenwidth * 0.7,
-            height: 100.0,
+            height: _screenheight * 0.5,
             child: Center(
               child: itemPhotosWidgetList.isEmpty
                   ? Center(

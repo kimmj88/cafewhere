@@ -119,13 +119,13 @@ class _RegisterUserState extends State<RegisterUser> {
             child: Row(
               children: [
                 Container(
-                  width: Get.width * 0.57,
+                  width: Get.width * 0.50,
                   child: TextField(
                     controller: widget.Edit_phonenumber,
                     maxLines: 1,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: '이메일을 입력해주세요',
+                      labelText: '휴대폰번호를 입력해주세요',
                     ),
                   ),
                 ),

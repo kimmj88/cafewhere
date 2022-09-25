@@ -105,57 +105,57 @@ class _UploadPageState extends State<UploadPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 50.0,
-                  left: 100.0,
-                  right: 100.0,
-                ),
-                child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 15.0),
-                    color: const Color.fromRGBO(0, 35, 102, 1),
-                    onPressed: uploading ? null : () => upload(),
-                    child: uploading
-                        ? const SizedBox(
-                            child: CircularProgressIndicator(),
-                            height: 15.0,
-                          )
-                        : const Text(
-                            "Add",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(
+              //     top: 50.0,
+              //     left: 100.0,
+              //     right: 100.0,
+              //   ),
+              //   child: FlatButton(
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(10),
+              //       ),
+              //       padding: const EdgeInsets.symmetric(
+              //           horizontal: 20.0, vertical: 15.0),
+              //       color: const Color.fromRGBO(0, 35, 102, 1),
+              //       onPressed: uploading ? null : () => upload(),
+              //       child: uploading
+              //           ? const SizedBox(
+              //               child: CircularProgressIndicator(),
+              //               height: 15.0,
+              //             )
+              //           : const Text(
+              //               "Add",
+              //               style: TextStyle(
+              //                 color: Colors.white,
+              //                 fontSize: 20.0,
+              //                 fontWeight: FontWeight.bold,
+              //               ),
+              //             )),
+              // ),
             ],
           ),
-          FlatButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-              color: const Color.fromRGBO(0, 35, 102, 1),
-              onPressed: uploading ? null : () => upload(),
-              child: uploading
-                  ? const SizedBox(
-                      child: CircularProgressIndicator(),
-                      height: 15.0,
-                    )
-                  : const Text(
-                      "DONE",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
+          // FlatButton(
+          //     shape: RoundedRectangleBorder(
+          //       borderRadius: BorderRadius.circular(10),
+          //     ),
+          //     padding:
+          //         const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+          //     color: const Color.fromRGBO(0, 35, 102, 1),
+          //     onPressed: uploading ? null : () => upload(),
+          //     child: uploading
+          //         ? const SizedBox(
+          //             child: CircularProgressIndicator(),
+          //             height: 15.0,
+          //           )
+          //         : const Text(
+          //             "DONE",
+          //             style: TextStyle(
+          //               color: Colors.white,
+          //               fontSize: 20.0,
+          //               fontWeight: FontWeight.bold,
+          //             ),
+          //           )),
         ],
       ),
     ));

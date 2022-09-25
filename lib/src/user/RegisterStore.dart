@@ -49,24 +49,24 @@ class _RegisterStoreState extends State<RegisterStore> {
             EditBox(widget.Edit_strDescription),
             Text('태그'),
             EditBox(widget.Edit_strTag),
-            RaisedButton(onPressed: () async {
-              String url = "http://124.53.149.174:3000/CreateStore?StoreName=" +
-                  widget.Edit_strStoreName.text +
-                  "&StoreAddress=" +
-                  widget.Edit_strAddress.text +
-                  "&StoreDesc=" +
-                  widget.Edit_strDescription.text +
-                  "&StoreTag=" +
-                  widget.Edit_strTag.text +
-                  "";
+            // RaisedButton(onPressed: () async {
+            //   String url = "http://124.53.149.174:3000/CreateStore?StoreName=" +
+            //       widget.Edit_strStoreName.text +
+            //       "&StoreAddress=" +
+            //       widget.Edit_strAddress.text +
+            //       "&StoreDesc=" +
+            //       widget.Edit_strDescription.text +
+            //       "&StoreTag=" +
+            //       widget.Edit_strTag.text +
+            //       "";
 
-              var response = await http.get(Uri.parse(url));
-              if (response.statusCode == 200) {
-                print('Insert Successful');
-              } else {
-                print('Insert Failed');
-              }
-            }),
+            //   var response = await http.get(Uri.parse(url));
+            //   if (response.statusCode == 200) {
+            //     print('Insert Successful');
+            //   } else {
+            //     print('Insert Failed');
+            //   }
+            // }),
           ],
         ),
       ),

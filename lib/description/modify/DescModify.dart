@@ -33,11 +33,9 @@ class _MyWidgetState extends State<DescModify> {
               SizedBox(height: 20),
               EditBox('이용안내', widget.Edit_runtimeUse, widget.str_guide_desc),
               SizedBox(height: 20),
-              RaisedButton(
-                  child: Text('수정'),
-                  onPressed: () async {
-                    SetStoreDescription();
-                  }),
+              ElevatedButton(onPressed: (() {
+                SetStoreDescription();
+              }), child: Text('수정'))
             ],
           ),
         ),
